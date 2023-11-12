@@ -2,7 +2,7 @@ package com.example.testareonline.service;
 
 import com.example.testareonline.entity.User;
 import com.example.testareonline.interfaces.IUserService;
-import com.example.testareonline.repository.UserRepository;
+import com.example.testareonline.repository.IUserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +10,23 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
-    private final UserRepository userRepository;
+    private final IUserRepository IUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public UserService(IUserRepository IUserRepository, PasswordEncoder passwordEncoder) {
+        this.IUserRepository = IUserRepository;
         this.passwordEncoder = passwordEncoder;
     }
     @Override
     public List<User> getUsers(){
-        return userRepository.findAll();
+        return IUserRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id){
-        boolean usersExists = userRepository.existsById(id);
+        boolean usersExists = IUserRepository.existsById(id);
         if(usersExists){
-            return userRepository.findById(id).get();
+            return IUserRepository.findById(id).get();
         }else{
             throw new IllegalStateException(String.format("User with %s id does not exists", id));
         }
@@ -35,12 +35,12 @@ public class UserService implements IUserService {
     public void createUser(User user){
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        userRepository.save(user);
+        IUserRepository.save(user);
     }
 
     @Override
     public void updateUser(Long id, User user){
-        User userToUpdate = userRepository.findById(id).orElseThrow(
+        User userToUpdate = IUserRepository.findById(id).orElseThrow(
                 () -> new IllegalStateException(String.format("User with id %s doesn't exist", id)));
         userToUpdate.setEmail(user.getEmail());
         userToUpdate.setLastname(user.getLastname());
@@ -48,15 +48,15 @@ public class UserService implements IUserService {
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         userToUpdate.setPassword(hashedPassword);
-        userRepository.save(userToUpdate);
+        IUserRepository.save(userToUpdate);
 
     }
 
     @Override
     public void deleteUser(Long id){
-        boolean usersExists = userRepository.existsById(id);
+        boolean usersExists = IUserRepository.existsById(id);
         if(usersExists){
-            userRepository.deleteById(id);
+            IUserRepository.deleteById(id);
         }else{
             throw new IllegalStateException(String.format("User with %s id does not exists", id));
         }
