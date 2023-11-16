@@ -39,7 +39,6 @@ public class QuestionController {
     public ResponseEntity<String> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         return questionService.updateQuestion(id, question);
     }
-
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         return questionService.deleteQuestion(id);
