@@ -10,23 +10,23 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
-    private final IUserRepository IUserRepository;
+    private final IUserRepository iUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserRepository IUserRepository, PasswordEncoder passwordEncoder) {
-        this.IUserRepository = IUserRepository;
+    public UserService(IUserRepository iUserRepository, PasswordEncoder passwordEncoder) {
+        this.iUserRepository = iUserRepository;
         this.passwordEncoder = passwordEncoder;
     }
     @Override
     public List<User> getUsers(){
-        return IUserRepository.findAll();
+        return iUserRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id){
-        boolean usersExists = IUserRepository.existsById(id);
+        boolean usersExists = iUserRepository.existsById(id);
         if(usersExists){
-            return IUserRepository.findById(id).get();
+            return iUserRepository.findById(id).get();
         }else{
             throw new IllegalStateException(String.format("User with %s id does not exists", id));
         }
@@ -35,12 +35,12 @@ public class UserService implements IUserService {
     public void createUser(User user){
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        IUserRepository.save(user);
+        iUserRepository.save(user);
     }
 
     @Override
     public void updateUser(Long id, User user){
-        User userToUpdate = IUserRepository.findById(id).orElseThrow(
+        User userToUpdate = iUserRepository.findById(id).orElseThrow(
                 () -> new IllegalStateException(String.format("User with id %s doesn't exist", id)));
         userToUpdate.setEmail(user.getEmail());
         userToUpdate.setLastname(user.getLastname());
@@ -48,15 +48,15 @@ public class UserService implements IUserService {
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         userToUpdate.setPassword(hashedPassword);
-        IUserRepository.save(userToUpdate);
+        iUserRepository.save(userToUpdate);
 
     }
 
     @Override
     public void deleteUser(Long id){
-        boolean usersExists = IUserRepository.existsById(id);
+        boolean usersExists = iUserRepository.existsById(id);
         if(usersExists){
-            IUserRepository.deleteById(id);
+            iUserRepository.deleteById(id);
         }else{
             throw new IllegalStateException(String.format("User with %s id does not exists", id));
         }

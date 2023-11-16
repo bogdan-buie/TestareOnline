@@ -1,10 +1,12 @@
 package com.example.testareonline.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 
-@Entity
-@Table(name = "question")
-public class Question {
+public class QuestionWrapper {
+    // La fel ca si clasa Question dar fara raspuns
     @Id
     @SequenceGenerator(
             name = "question_sequence",
@@ -20,32 +22,23 @@ public class Question {
     private String option2;
     private String option3;
     private String option4;
-    private String rightAnswer;
-    private String difficultyLevel;
-    private String category;
 
-    public Question() {
-    }
-
-    public Question(String questionTitle, String option1, String option2, String option3, String option4, String rightAnswer, String difficultyLevel, String category) {
+    public QuestionWrapper(Long id, String questionTitle, String option1, String option2, String option3, String option4) {
+        this.id = id;
         this.questionTitle = questionTitle;
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
-        this.rightAnswer = rightAnswer;
-        this.difficultyLevel = difficultyLevel;
-        this.category = category;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getQuestionTitle() {
         return questionTitle;
@@ -85,29 +78,5 @@ public class Question {
 
     public void setOption4(String option4) {
         this.option4 = option4;
-    }
-
-    public String getRightAnswer() {
-        return rightAnswer;
-    }
-
-    public void setRightAnswer(String rightAnswer) {
-        this.rightAnswer = rightAnswer;
-    }
-
-    public String getDifficultyLevel() {
-        return difficultyLevel;
-    }
-
-    public void setDifficultyLevel(String difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }
