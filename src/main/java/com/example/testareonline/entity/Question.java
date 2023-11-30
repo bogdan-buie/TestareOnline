@@ -15,6 +15,7 @@ public class Question {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
+
     private String questionTitle;
     private String option1;
     private String option2;

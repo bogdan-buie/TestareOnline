@@ -1,64 +1,60 @@
 package com.example.testareonline.service;
 
+
+import com.example.testareonline.dto.CredentialsDto;
+import com.example.testareonline.dto.SignUpDto;
+import com.example.testareonline.dto.UserDto;
 import com.example.testareonline.entity.User;
-import com.example.testareonline.interfaces.IUserService;
-import com.example.testareonline.repository.IUserRepository;
+import com.example.testareonline.exceptions.AppException;
+import com.example.testareonline.mappers.UserMapper;
+import com.example.testareonline.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.nio.CharBuffer;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
-public class UserService implements IUserService {
-    private final IUserRepository iUserRepository;
+public class UserService {
+
+    private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserRepository iUserRepository, PasswordEncoder passwordEncoder) {
-        this.iUserRepository = iUserRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-    @Override
-    public List<User> getUsers(){
-        return iUserRepository.findAll();
-    }
+    private final UserMapper userMapper;
 
-    @Override
-    public User getUserById(Long id){
-        boolean usersExists = iUserRepository.existsById(id);
-        if(usersExists){
-            return iUserRepository.findById(id).get();
-        }else{
-            throw new IllegalStateException(String.format("User with %s id does not exists", id));
+    public UserDto login(CredentialsDto credentialsDto) {
+        User user = userRepository.findByLogin(credentialsDto.getLogin())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
+            return userMapper.toUserDto(user);
         }
-    }
-    @Override
-    public void createUser(User user){
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
-        iUserRepository.save(user);
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    public void updateUser(Long id, User user){
-        User userToUpdate = iUserRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException(String.format("User with id %s doesn't exist", id)));
-        userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setLastname(user.getLastname());
-        userToUpdate.setFirstname(user.getFirstname());
+    public UserDto register(SignUpDto userDto) {
+        Optional<User> optionalUser = userRepository.findByLogin(userDto.getLogin());
 
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        userToUpdate.setPassword(hashedPassword);
-        iUserRepository.save(userToUpdate);
-
-    }
-
-    @Override
-    public void deleteUser(Long id){
-        boolean usersExists = iUserRepository.existsById(id);
-        if(usersExists){
-            iUserRepository.deleteById(id);
-        }else{
-            throw new IllegalStateException(String.format("User with %s id does not exists", id));
+        if (optionalUser.isPresent()) {
+            throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
+
+        User user = userMapper.signUpToUser(userDto);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+
+        User savedUser = userRepository.save(user);
+
+        return userMapper.toUserDto(savedUser);
     }
+
+    public UserDto findByLogin(String login) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        return userMapper.toUserDto(user);
+    }
+
 }

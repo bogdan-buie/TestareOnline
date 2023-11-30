@@ -5,7 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 
-public class QuestionWrapper {
+public class QuestionWrapper {//folosit pentru trimitere pe front-end
     // La fel ca si clasa Question dar fara raspuns
     @Id
     @SequenceGenerator(
