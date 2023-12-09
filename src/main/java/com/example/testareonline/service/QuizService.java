@@ -143,4 +143,33 @@ public class QuizService implements IQuizService {
         iQuizSubmission.save(quizSubmission); // nu pot salva
         return new ResponseEntity<Double>(nota, HttpStatus.OK);
     }
+
+    public ResponseEntity<List<Quiz>> getAllQuizzes() {
+        try {
+            return new ResponseEntity<>(iQuizRepository.findAll(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<List<Question>> getSecretQuizQuestions(Long id) {
+        Optional<Quiz> quiz = iQuizRepository.findById(id);// identificare quiz dupa id
+        List<Question> questionFromDb = quiz.get().getQuestions();
+        return new ResponseEntity<>(questionFromDb, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> deleteQuiz(Long id) {
+        boolean quizExists = iQuizRepository.existsById(id);
+        if(quizExists){
+            iQuizRepository.deleteById(id);
+            return new ResponseEntity<>("Quiz deleted with success", HttpStatus.OK);
+
+        }else{
+            return new ResponseEntity<>("Quiz does not exit", HttpStatus.OK);
+
+        }
+    }
 }
