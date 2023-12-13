@@ -45,7 +45,7 @@ export default function QuestionDetail() {
                     </h2>
                     <div className='card'>
                         <div className='card-header'>
-                            Details of student id:
+                            <b>ID: </b> {question.id}
                             <ul className='list-group list-group-flush'>
                                 <li className='list-group-item'>
                                     <b>Titlu: </b>

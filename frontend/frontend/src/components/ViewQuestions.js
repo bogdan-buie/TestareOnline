@@ -46,6 +46,7 @@ export default function ViewQuestions() {
                     <thead>
                         <tr>
                             <th scope="col">Nr. crt.</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Conținutul întrebări</th>
                             <th scope="col">Nivel de dificultate </th>
                             <th scope="col">Categorie</th>
@@ -56,6 +57,7 @@ export default function ViewQuestions() {
                             questions.map((question, index) => (
                                 < tr >
                                     <th scope="row" key={index}>{index + 1}</th>
+                                    <td>{question.id}</td>
                                     <td>{question.questionTitle}</td>
                                     <td>{question.difficultyLevel}</td>
                                     <td>{question.category}</td>

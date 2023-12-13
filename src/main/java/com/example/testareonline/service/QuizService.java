@@ -41,6 +41,7 @@ public class QuizService implements IQuizService {
 
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
+
     public ResponseEntity<String> addQuestionToQuiz(Long quizId, Long questionId) {
         Quiz quiz = iQuizRepository.findById(quizId).get();
         Question question = iQuestionRepository.findById(questionId).orElseThrow(() -> new EntityNotFoundException("Question not found"));
@@ -60,13 +61,14 @@ public class QuizService implements IQuizService {
 
         return new ResponseEntity<>("Question removed with success", HttpStatus.OK);
     }
+
     @Override
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Long id) {
         Optional<Quiz> quiz = iQuizRepository.findById(id);
         List<Question> questionFromDb = quiz.get().getQuestions();
         List<QuestionWrapper> questionForUser = new ArrayList<>();
-        for(Question q: questionFromDb){
-            QuestionWrapper qw = new QuestionWrapper(q.getId(), q.getQuestionTitle(), q.getOption1(), q.getOption2(), q.getOption3(),q.getOption4());
+        for (Question q : questionFromDb) {
+            QuestionWrapper qw = new QuestionWrapper(q.getId(), q.getQuestionTitle(), q.getOption1(), q.getOption2(), q.getOption3(), q.getOption4());
             questionForUser.add(qw);
         }
         return new ResponseEntity<>(questionForUser, HttpStatus.OK);
@@ -79,10 +81,10 @@ public class QuizService implements IQuizService {
 
         List<Question> questions = quiz.getQuestions();// intrebarile cu tot cu raspuns
         int correctAnswers = 0;
-        int i =0;
-        for(Response res : responses){
-            if(res.getResponse().equals(questions.get(i).getRightAnswer())){
-                correctAnswers ++;
+        int i = 0;
+        for (Response res : responses) {
+            if (res.getResponse().equals(questions.get(i).getRightAnswer())) {
+                correctAnswers++;
             }
             i++;
         }
@@ -128,16 +130,23 @@ public class QuizService implements IQuizService {
         }
 
         int correctAnswers = 0;
-        int i = 0;
-        //atentie la ordinea raspunsurilor sa fie aceeasi cu a intrebarilor
-        for (Response res : studentResponses) {
-            if (res.getResponse().equals(questions.get(i).getRightAnswer())) {
-                correctAnswers++;
+
+        // Iteram prin fiecare întrebare și găsim răspunsul corect corespunzător
+        for (Question question : questions) {
+            for (Response res : studentResponses) {
+                if (res.getQuestionId().equals(question.getId())) {
+                    if (res.getResponse().equals(question.getRightAnswer())) {
+                        correctAnswers++;
+                    }
+                    break;
+                }
             }
-            i++;
         }
 
-        double nota = correctAnswers / studentResponses.size() * 10;
+        double nota = ((double) correctAnswers / questions.size()) * 10;
+
+        System.out.println("Raspunsuri corecte " + correctAnswers);
+        System.out.println("Nr de intrebari  " + questions.size());
         quizSubmission.setNota(nota);
         quizSubmission.setResponses(studentResponses);
         iQuizSubmission.save(quizSubmission); // nu pot salva
@@ -147,8 +156,7 @@ public class QuizService implements IQuizService {
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
         try {
             return new ResponseEntity<>(iQuizRepository.findAll(), HttpStatus.OK);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -163,11 +171,11 @@ public class QuizService implements IQuizService {
 
     public ResponseEntity<String> deleteQuiz(Long id) {
         boolean quizExists = iQuizRepository.existsById(id);
-        if(quizExists){
+        if (quizExists) {
             iQuizRepository.deleteById(id);
             return new ResponseEntity<>("Quiz deleted with success", HttpStatus.OK);
 
-        }else{
+        } else {
             return new ResponseEntity<>("Quiz does not exit", HttpStatus.OK);
 
         }

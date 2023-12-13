@@ -26,3 +26,13 @@ export const request = (method, url, data) => {
         data: data
     });
 };
+
+// request fara header
+export const request2 = (method, url, data) => {
+    return axios({
+        method: method,
+        url: url,
+        headers: {},
+        data: data
+    });
+};

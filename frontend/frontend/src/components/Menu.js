@@ -41,9 +41,21 @@ export default function Menu(props) {
                         </Card.Body>
                     </Card>
                 </Col>
-
-                {/* Adaugă altele după nevoie */}
+                <Col>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Note</Card.Title>
+                            <Card.Text>
+                                Text text text
+                            </Card.Text>
+                            <Button as={Link} to="/note" variant="primary">
+                                Go to
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
             </Row>
+
         </div>
     );
 }

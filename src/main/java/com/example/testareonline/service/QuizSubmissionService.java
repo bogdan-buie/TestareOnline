@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class QuizSubmissionService {
     @Autowired
@@ -25,4 +28,15 @@ public class QuizSubmissionService {
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
+
+    public ResponseEntity<List<QuizSubmission>> getAllSubmissions() {
+        try {
+            return new ResponseEntity<>(iQuizSubmission.findAll(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+    }
 }

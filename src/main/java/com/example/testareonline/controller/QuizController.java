@@ -3,6 +3,7 @@ import com.example.testareonline.dto.QuizSubmissionDTO;
 import com.example.testareonline.entity.*;
 import com.example.testareonline.service.QuizService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 import java.util.List;
@@ -49,6 +50,7 @@ public class QuizController {
     @PostMapping(path = "submit3/{id}")
     public ResponseEntity <Double> submit3Quiz(@PathVariable Long id, @RequestBody QuizSubmissionDTO quizSubmissionDTO){
         QuizSubmission qsm = modelMapper.map(quizSubmissionDTO, QuizSubmission.class);
+
         return quizService.calculate3Result(id, qsm);
     }
     @DeleteMapping(path = "delete/{id}")

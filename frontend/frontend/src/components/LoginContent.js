@@ -30,8 +30,13 @@ export default class LoginContent extends React.Component {
     logout = () => {
         this.setState({ componentToShow: "welcome" })
         setAuthHeader(null);
+        console.log("Linia 33");
+        this.navigateToHome();
     };
-
+    navigateToHome = () => {
+        console.log("Linia 37");
+        return <Navigate to="/" />;
+    }
     onLogin = (e, username, password) => {
         e.preventDefault();
         request(

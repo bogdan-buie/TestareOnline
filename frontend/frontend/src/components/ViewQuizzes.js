@@ -44,6 +44,7 @@ export default function ViewQuizzes() {
                     <thead>
                         <tr>
                             <th scope="col">Nr. crt.</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Titlu</th>
                         </tr>
                     </thead>
@@ -51,7 +52,8 @@ export default function ViewQuizzes() {
                         {
                             quizzes.map((quiz, index) => (
                                 < tr >
-                                    <th scope="row" key={index}>{index + 1}</th>
+                                    <td scope="row" key={index}>{index + 1}</td>
+                                    <th>{quiz.id}</th>
                                     <td>{quiz.title}</td>
 
 
