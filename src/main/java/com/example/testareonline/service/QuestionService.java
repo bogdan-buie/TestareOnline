@@ -57,6 +57,7 @@ public class QuestionService implements IQuestionService {
         questionToUpdate.setOption1(question.getOption1());
         questionToUpdate.setOption2(question.getOption2());
         questionToUpdate.setOption3(question.getOption3());
+        questionToUpdate.setOption4(question.getOption4());
         questionToUpdate.setRightAnswer(question.getRightAnswer());
 
         iQuestionRepository.save(questionToUpdate);

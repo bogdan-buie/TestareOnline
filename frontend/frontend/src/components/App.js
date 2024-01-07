@@ -1,9 +1,6 @@
 import logo from '../logo.svg';
 import './App.css';
 
-import AppContent from './AppContent';
-import LoginForm from './LoginForm';
-
 import LoginContent from './LoginContent';
 import Header from './Header';
 import Home from './Home';
@@ -20,6 +17,7 @@ import ViewQuizQuestions from './ViewQuizQuestions';
 import PublicContent from './PublicContent';
 import QuizComponent from './QuizComponent';
 import ViewSubmissions from './ViewSubmissions';
+import RealTimeNotifications from './NotificationComponent';
 function App() {
 
   return (
@@ -41,9 +39,9 @@ function App() {
           <Route exact path="/viewQuizQuestions/:id" element={<ViewQuizQuestions />} ></Route>
           <Route exact path="/editQuestion/:id" element={<EditQuestion />} ></Route>
           <Route path="/quizzes" element={<ViewQuizzes />} />
+          <Route path="/notification" element={<RealTimeNotifications />} />
         </Routes>
       </Router>
-
     </div>
   );
 }

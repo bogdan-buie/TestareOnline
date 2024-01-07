@@ -1,5 +1,6 @@
 package com.example.testareonline.service;
 
+import com.example.testareonline.dto.QuizNotificationDTO;
 import com.example.testareonline.entity.*;
 import com.example.testareonline.interfaces.IQuizService;
 import com.example.testareonline.repository.IQuestionRepository;
@@ -10,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +30,11 @@ public class QuizService implements IQuizService {
 
     @Autowired
     IResponseRepository iResponseRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
+    public QuizService(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 
     @Override
     public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
@@ -130,7 +136,6 @@ public class QuizService implements IQuizService {
         }
 
         int correctAnswers = 0;
-
         // Iteram prin fiecare întrebare și găsim răspunsul corect corespunzător
         for (Question question : questions) {
             for (Response res : studentResponses) {
@@ -145,11 +150,17 @@ public class QuizService implements IQuizService {
 
         double nota = ((double) correctAnswers / questions.size()) * 10;
 
-        System.out.println("Raspunsuri corecte " + correctAnswers);
-        System.out.println("Nr de intrebari  " + questions.size());
+        //System.out.println("Raspunsuri corecte " + correctAnswers);
+        //System.out.println("Nr de intrebari  " + questions.size());
         quizSubmission.setNota(nota);
         quizSubmission.setResponses(studentResponses);
-        iQuizSubmission.save(quizSubmission); // nu pot salva
+        iQuizSubmission.save(quizSubmission);
+
+        QuizNotificationDTO qn = new QuizNotificationDTO("Quiz completed", quizSubmission.getLastName(), quizSubmission.getFirstName(), quizSubmission.getSpecializare(), nota);
+        // Trimite notificare WebSocket către frontend
+        messagingTemplate.convertAndSend("/topic/quizNotification", qn);
+
+
         return new ResponseEntity<Double>(nota, HttpStatus.OK);
     }
 

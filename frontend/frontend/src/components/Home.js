@@ -2,8 +2,13 @@ import React from "react";
 import { Link } from 'react-router-dom';
 export default class WelcomeContent extends React.Component {
     render() {
+
         return (
-            <div className="row justify-contend-md-center" style={{ margin: '40px' }}>
+
+            <div className="row justify-contend-md-center"
+                style={{
+                    margin: '100px'
+                }}>
                 <div className="jumbo jumbotron-fluid">
                     <div className="container">
                         <h1 className="display-6">Ești pregătit pentru un nou test?</h1>
@@ -15,6 +20,7 @@ export default class WelcomeContent extends React.Component {
                     </div>
                 </div>
             </div>
+
         );
     }
 }

@@ -5,8 +5,7 @@ import { request, setAuthHeader } from '../axios_helper';
 
 import Buttons from './Buttons';
 import LoginForm from './LoginForm';
-import WelcomeContent from './WelcomeContent';
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Menu from './Menu';
 
 export default class LoginContent extends React.Component {

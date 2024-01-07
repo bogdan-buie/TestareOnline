@@ -30,8 +30,12 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/ws")
+                        .permitAll()
+                        .requestMatchers("/ws/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/login", "/api/v1/register","/api/v1/quiz/submit3/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/quiz/get/{quizId}", "/api/v1/quizSubmission/get/all").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/quiz/get/{quizId}").permitAll()
                         .anyRequest().authenticated())
         ;
         return http.build();

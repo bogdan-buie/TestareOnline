@@ -33,7 +33,7 @@ export default function Menu(props) {
                         <Card.Body>
                             <Card.Title>Gestiune quiz-uri</Card.Title>
                             <Card.Text>
-                                Text text text
+                                Gestionează și creează noi quiz-uri
                             </Card.Text>
                             <Button as={Link} to="/quizzes" variant="primary">
                                 Go to
@@ -46,9 +46,22 @@ export default function Menu(props) {
                         <Card.Body>
                             <Card.Title>Note</Card.Title>
                             <Card.Text>
-                                Text text text
+                                Vizualizează notele studenților
                             </Card.Text>
                             <Button as={Link} to="/note" variant="primary">
+                                Go to
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Notificări</Card.Title>
+                            <Card.Text>
+                                Notificări în timp real
+                            </Card.Text>
+                            <Button as={Link} to="/notification" variant="primary">
                                 Go to
                             </Button>
                         </Card.Body>
