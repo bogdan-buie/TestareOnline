@@ -1,2 +1,2 @@
 # Aplicatie pentru testare online (Quiz online)
-Variantă în lucru pe branch1
+Variantă finală pe branch1
