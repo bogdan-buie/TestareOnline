@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import { request2 } from '../axios_helper';
-
+import { useNavigate } from 'react-router-dom';
 const QuizComponent = () => {
     const { id } = useParams();
     const [firstName, setFirstName] = useState('');
@@ -10,7 +10,7 @@ const QuizComponent = () => {
     const [specialization, setSpecialization] = useState('');
     const [questions, setQuestions] = useState([]);
     const [userAnswers, setUserAnswers] = useState(Array(questions.length).fill(null));
-
+    const navigate = useNavigate();
     useEffect(() => {
         // Funcția pentru a aduce întrebările de pe backend
         const fetchQuizQuestions = async () => {
@@ -44,7 +44,7 @@ const QuizComponent = () => {
 
     const handleToQuestions = () => {
         var myDiv = document.getElementById("intrebari");
-        if (firstName != '' && lastName != '' && specialization != '') {
+        if (firstName !== '' && lastName !== '' && specialization !== '') {
             myDiv.style.display = "block";
         }
         else {
@@ -75,8 +75,8 @@ const QuizComponent = () => {
 
             const response = await request2('POST', `/quiz/submit3/${id}`, payload);
             console.log('Răspunsul la submit:', response.data);
+            navigate('/finishedQuiz');
 
-            // Puteți adăuga logica suplimentară sau redirecționa utilizatorul aici
         } catch (error) {
             console.error('Eroare la trimiterea quiz-ului:', error);
             // Tratați eroarea într-un mod corespunzător

@@ -18,6 +18,7 @@ import PublicContent from './PublicContent';
 import QuizComponent from './QuizComponent';
 import ViewSubmissions from './ViewSubmissions';
 import RealTimeNotifications from './NotificationComponent';
+import FinishedQuiz from './FinishedQuiz';
 function App() {
 
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/secret" element={<AuthContent />} />
           <Route path="/public" element={<PublicContent />} />
           <Route exact path="/getQuiz/:id" element={<QuizComponent />} ></Route>
+          <Route path="/finishedQuiz" element={<FinishedQuiz />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/questions" element={<ViewQuestions />} />
           <Route path="/note" element={<ViewSubmissions />} />
